@@ -9,5 +9,5 @@
 import UIKit
 
 class Scoop: CCSprite {
-   
+   var exclamation = false
 }

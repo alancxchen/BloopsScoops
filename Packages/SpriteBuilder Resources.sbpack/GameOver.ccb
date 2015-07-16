@@ -900,11 +900,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>155</real>
-							<real>69.000015258789062</real>
+							<real>0.5</real>
+							<real>0.12147890031337738</real>
 							<integer>0</integer>
-							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
