@@ -98,6 +98,7 @@
 		E7CB56C21B54317F00728BA3 /* Cone.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CB56C11B54317F00728BA3 /* Cone.swift */; };
 		E7CB56C81B54341E00728BA3 /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CB56C71B54341E00728BA3 /* Gameplay.swift */; };
 		E7CB56D01B545CFE00728BA3 /* Scoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CB56CF1B545CFE00728BA3 /* Scoop.swift */; };
+		E7F706E71B5D3CB800ED3C68 /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F706E61B5D3CB800ED3C68 /* Powerup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,6 +222,7 @@
 		E7CB56C11B54317F00728BA3 /* Cone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cone.swift; path = Source/Cone.swift; sourceTree = "<group>"; };
 		E7CB56C71B54341E00728BA3 /* Gameplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gameplay.swift; sourceTree = "<group>"; };
 		E7CB56CF1B545CFE00728BA3 /* Scoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scoop.swift; sourceTree = "<group>"; };
+		E7F706E61B5D3CB800ED3C68 /* Powerup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Powerup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -449,6 +451,7 @@
 				D352B48019EC608A00829775 /* MetalShaders */,
 				E7CB56C11B54317F00728BA3 /* Cone.swift */,
 				E7CB56C71B54341E00728BA3 /* Gameplay.swift */,
+				E7F706E61B5D3CB800ED3C68 /* Powerup.swift */,
 				E719F6411B56C3BF00E1819B /* GameOver.swift */,
 				E7CB56CF1B545CFE00728BA3 /* Scoop.swift */,
 				E719F6371B55B18500E1819B /* Apple.swift */,
@@ -832,6 +835,7 @@
 				E719F6381B55B18500E1819B /* Apple.swift in Sources */,
 				E7CB56C21B54317F00728BA3 /* Cone.swift in Sources */,
 				E7CB56C81B54341E00728BA3 /* Gameplay.swift in Sources */,
+				E7F706E71B5D3CB800ED3C68 /* Powerup.swift in Sources */,
 				E7CB56D01B545CFE00728BA3 /* Scoop.swift in Sources */,
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
 				E719F6421B56C3BF00E1819B /* GameOver.swift in Sources */,

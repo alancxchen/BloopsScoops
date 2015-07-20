@@ -173,7 +173,7 @@
 						<key>displayName</key>
 						<string>placeholderGround</string>
 						<key>memberVarAssignmentName</key>
-						<string></string>
+						<string>ground</string>
 						<key>memberVarAssignmentType</key>
 						<integer>1</integer>
 						<key>physicsBody</key>
@@ -191,6 +191,7 @@
 							<key>collisionMask</key>
 							<array>
 								<string>scoop</string>
+								<string>apple</string>
 							</array>
 							<key>collisionType</key>
 							<string>ground</string>
@@ -337,6 +338,8 @@
 								<array/>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 					</dict>
 					<dict>
 						<key>UUID</key>
@@ -836,6 +839,14 @@
 					</dict>
 					<dict>
 						<key>name</key>
+						<string>rotation</string>
+						<key>type</key>
+						<string>Degrees</string>
+						<key>value</key>
+						<real>-90.61761474609375</real>
+					</dict>
+					<dict>
+						<key>name</key>
 						<string>block</string>
 						<key>type</key>
 						<string>Block</string>
@@ -886,7 +897,7 @@
 						<string>String</string>
 						<key>value</key>
 						<array>
-							<string>pause</string>
+							<string>=</string>
 							<false/>
 						</array>
 					</dict>
@@ -1530,8 +1541,6 @@
 						<array/>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>

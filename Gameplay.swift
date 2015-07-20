@@ -19,7 +19,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     weak var pauseButton : CCButton!
     weak var startInstructions: CCLabelTTF!
     weak var lifeBar : CCSprite!
-
+    weak var ground : CCSprite!
     
     var yScaleValue : CGFloat = 200
     var counter = 0
@@ -56,7 +56,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         //Necessary for ccphysicsCollisionDelegate
         ccPhysicsNode.collisionDelegate = self
         ccPhysicsNode.gravity = CGPoint(x: 0, y: -200)
-     
+        
         //pauseButton.opacity = 0
         //center the cone
         //cone.position = CGPoint(x: self.contentSizeInPoints.width / 2, y: cone.position.y)
@@ -210,21 +210,21 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         while randomX < lastApplePosition.x + 50 && randomX > lastApplePosition.x - 50 {
             randomX = drop.contentSizeInPoints.width / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - drop.contentSizeInPoints.width)
         }
-        let y = self.contentSizeInPoints.height + 100
-        
-        drop.position = CGPoint(x: randomX, y: y)
         let launchDirection = CGPoint(x: 0, y: 1)
-        
-        //8000 is nice for starting out, 100000 is good for fast moving dots
+        let y = self.contentSizeInPoints.height + 100
         var force = ccpMult(launchDirection, 8000)
-        
+        drop.position = CGPoint(x: randomX, y: y)
         var random = Int(CCRANDOM_0_1() * 100)
         
-        if random > 90 && score > 30 {
-            var exclamation = CCBReader.load("exclamation")
-            self.addChild(exclamation)
-            exclamation.position = CGPoint(x: drop.position.x, y: self.contentSizeInPoints.height - 40)
-            force = ccpMult(launchDirection, -100000)
+        if random < 3 && score > 30 && counter > 300 {
+            let powerup = CCBReader.load("powerupScoop1")
+           // self.addChild(powerup)
+            var randX = CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - 50) + 25
+           // var randY = CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.height - 200) + 175
+            let y = self.contentSizeInPoints.height + 100
+            powerup.position = CGPoint(x: randX, y: y)
+            ccPhysicsNode.addChild(powerup)
+
         }
         
         ccPhysicsNode.addChild(drop)
@@ -240,8 +240,23 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         while randomX < lastDropPosition.x + 50 && randomX > lastDropPosition.x - 50 {
             randomX = apple.contentSizeInPoints.width / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - apple.contentSizeInPoints.width)
         }
+        let launchDirection = CGPoint(x: 0, y: 1)
+        
+        //8000 is nice for starting out, 100000 is good for fast moving dots
+        var force = ccpMult(launchDirection, 80)
+        
+        var random = Int(CCRANDOM_0_1() * 100)
         let y = self.contentSizeInPoints.height + 100
         apple.position = CGPoint (x: randomX, y: y)
+        if random > 90 && score > 50 && counter > 500 {
+            var exclamation = CCBReader.load("exclamation")
+            self.addChild(exclamation)
+            exclamation.position = CGPoint(x: apple.position.x, y: self.contentSizeInPoints.height - 40)
+            force = ccpMult(launchDirection, -100000)
+        }
+        
+        
+        apple.physicsBody.applyForce(force)
         lastApplePosition = apple.position
         ccPhysicsNode.addChild(apple)
     }
@@ -280,7 +295,40 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             appleCollision.removeFromParent()
             }, key: appleCollision)
     }
-    
+    func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, powerupScoop1 : CCSprite!, coneCollision: CCSprite!) {
+        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+            powerupScoop1.removeFromParent()
+            self.slowDownTime()
+            }, key: powerupScoop1)
+        
+    }
+    func slowDownTime() {
+        counter = 0
+        var oldDropFrequency = frequencyOfDrops
+        var oldAppleFrequency = frequencyOfApples
+        gravity = CGPoint(x: 0, y: -200)
+        frequencyOfDrops = 40
+        for child in ccPhysicsNode.children {
+            if child as! NSObject != cone && child as! NSObject != ground{
+                child.removeFromParent()
+            }
+        }
+        //insert animation here
+        while frequencyOfDrops < oldDropFrequency {
+            if counter % 50 == 0 {
+                frequencyOfDrops -= 5
+//                gravity = CGPoint(x: 0, y: gravity.y - 100)
+            }
+        }
+        
+    }
+    func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, powerupScoop1 : CCSprite!, ground: CCSprite!) {
+        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+            powerupScoop1.removeFromParent()
+            }, key: powerupScoop1)
+        
+    }
+  
     
     func triggerGameOver() {
         gameState = .GameOver
