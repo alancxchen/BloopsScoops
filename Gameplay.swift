@@ -18,6 +18,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     weak var scoreLabel : CCLabelTTF!
     weak var pauseButton : CCButton!
     weak var startInstructions: CCLabelTTF!
+    weak var lifeBar : CCSprite!
+
     
     var yScaleValue : CGFloat = 200
     var counter = 0
@@ -29,20 +31,41 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     var lastDropPosition = CGPoint(x: 0, y: 0)
     var lastApplePosition = CGPoint (x: 0, y: 0)
     var gameState : GameState = .Ready
-    var physicsChildArray : [AnyObject] = []
+//    var physicsChildArray : [AnyObject] = []
+    var strike1 : Apple!
+    var strike2 : CCNode!
+    var strike3 : CCNode!
+    
+    
+//    var lifeLeft : Float = 10 {
+//        didSet {
+//            lifeLeft = max(min (lifeLeft, 10), 0)
+//            lifeBar.scaleX =   lifeLeft / Float(10)
+//            
+//        }
+//    }
+    
+    
 //    var savedPhysicsNode : CCPhysicsNode!
 //    var isPaused = false
     func didLoadFromCCB() {
+        CCDirector.sharedDirector().resume()
+        gameState = .Ready
         userInteractionEnabled = true
         //ccPhysicsNode.debugDraw = true
         //Necessary for ccphysicsCollisionDelegate
         ccPhysicsNode.collisionDelegate = self
         ccPhysicsNode.gravity = CGPoint(x: 0, y: -200)
-        pauseButton.opacity = 0
+     
+        //pauseButton.opacity = 0
         //center the cone
         //cone.position = CGPoint(x: self.contentSizeInPoints.width / 2, y: cone.position.y)
     }
-    
+    override func onEnter() {
+        super.onEnter()
+        var coneX = self.contentSizeInPoints.width / 2
+        cone.position = CGPoint(x: coneX, y: cone.position.y)
+    }
     func pause() {
         
         if gameState == .Paused {
@@ -70,22 +93,34 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     var scoopsHit : Int = 0 {
         didSet {
-            var strike1 = CCBReader.load("Apple")
-            strike1.position = ccp(85, 410)
-            strike1.opacity = 0.25
-            scene.addChild(strike1)
+//// lifeBar     
+//            if lifeLeft == 0 {
+//                var timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: Selector("triggerGameOver"), userInfo: nil, repeats: false)
+//            }
+//            if scoopsHit > 0 {
+//                lifeLeft -= 3.5
+//            }
             
             
-            var strike2 = CCBReader.load("Apple")
-            strike2.position = ccp(160, 410)
-            strike2.opacity = 0.25
-            scene.addChild(strike2)
             
-            var strike3 = CCBReader.load("Apple")
-            strike3.position = ccp(235, 410)
-            strike3.opacity = 0.25
-            scene.addChild(strike3)
-            
+ //3 strikes
+            if scoopsHit == 0 {
+                strike1 = CCBReader.load("Apple") as! Apple!
+                strike1.position = ccp(self.contentSizeInPoints.width / 4, self.contentSizeInPoints.height * 90 / 100)
+                strike1.opacity = 0.25
+                scene.addChild(strike1)
+                
+                
+                strike2 = CCBReader.load("Apple")
+                strike2.position = ccp(self.contentSizeInPoints.width / 2, self.contentSizeInPoints.height * 90 / 100)
+                strike2.opacity = 0.25
+                scene.addChild(strike2)
+                
+                strike3 = CCBReader.load("Apple")
+                strike3.position = ccp(self.contentSizeInPoints.width * 3 / 4, self.contentSizeInPoints.height * 90 / 100)
+                strike3.opacity = 0.25
+                scene.addChild(strike3)
+            }
             if scoopsHit == 1 {
                 strike1.opacity = 1
             }
@@ -96,6 +131,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 strike3.opacity = 1
                 
                 var timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: Selector("triggerGameOver"), userInfo: nil, repeats: false)
+                
             }
         }
     }
@@ -112,11 +148,12 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                     frequencyOfApples -= 2
                 }
             }
+           // lifeLeft += 0.25
         }
     }
     
     override func update(delta: CCTime) {
-        if gameState != .Paused {
+        if gameState != .Paused && gameState != .GameOver {
             if gameState == .Playing {
                 counter++
                 duration = duration + CGFloat(delta)
@@ -133,11 +170,14 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     
     override func touchBegan(touch: CCTouch!, withEvent event: CCTouchEvent!) {
-        if gameState != .Paused {
+        if gameState != .Paused && gameState != .GameOver {
             if gameState == .Ready {
                 gameState = .Playing
                 startInstructions.runAction(CCActionFadeOut(duration: 0.3))
                 scoopsHit = 0
+               
+                pauseButton.visible = true
+                pauseButton.opacity = 0
                 pauseButton.runAction(CCActionFadeIn(duration: 0.3))
             }
             let xPos = touch.locationInWorld().x
@@ -150,14 +190,14 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     
     override func touchMoved(touch: CCTouch!, withEvent event: CCTouchEvent!) {
-        if gameState != .Paused {
+        if gameState != .Paused && gameState != .GameOver{
             let xPos = touch.locationInWorld().x
             
-            println("original \(cone.position.x) \(cone.position.y)")
+           // println("original \(cone.position.x) \(cone.position.y)")
             
             cone.position = CGPoint(x: xPos, y: cone.position.y)
             
-            println("new : \(cone.position.x)  \(cone.position.y)")
+           // println("new : \(cone.position.x)  \(cone.position.y)")
         }
     }
     
@@ -170,19 +210,23 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         while randomX < lastApplePosition.x + 50 && randomX > lastApplePosition.x - 50 {
             randomX = drop.contentSizeInPoints.width / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - drop.contentSizeInPoints.width)
         }
- //     let randomY = self.contentSizeInPoints.height + 100 + CGFloat(CCRANDOM_0_1()) * yScaleValue
         let y = self.contentSizeInPoints.height + 100
+        
         drop.position = CGPoint(x: randomX, y: y)
         let launchDirection = CGPoint(x: 0, y: 1)
+        
         //8000 is nice for starting out, 100000 is good for fast moving dots
         var force = ccpMult(launchDirection, 8000)
+        
         var random = Int(CCRANDOM_0_1() * 100)
+        
         if random > 90 && score > 30 {
             var exclamation = CCBReader.load("exclamation")
             self.addChild(exclamation)
             exclamation.position = CGPoint(x: drop.position.x, y: self.contentSizeInPoints.height - 40)
             force = ccpMult(launchDirection, -100000)
         }
+        
         ccPhysicsNode.addChild(drop)
         lastDropPosition = drop.position
         drop.physicsBody.applyForce(force)
@@ -230,7 +274,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             scoopCollision.removeFromParent()
             }, key: scoopCollision)
     }
-    func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, ground: CCSprite!, appleCollision : Scoop!) {
+    func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, ground: CCSprite!, appleCollision : Apple!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             println("apple hit ground")
             appleCollision.removeFromParent()
@@ -241,15 +285,26 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     func triggerGameOver() {
         gameState = .GameOver
         // give the game over menu
-//        var gameOverScreen = CCBReader.load("GameOver", owner: self) as! GameOver
-//        gameOverScreen.score = score
-//        self.addChild(gameOverScreen)
-        
+
+//        strike1.removeAllChildren()
+        strike1.removeFromParent()
+        strike2.removeFromParent()
+        strike3.removeFromParent()
+        pauseButton.visible = false
+        scoreLabel.visible = false
+        CCDirector.sharedDirector().pause()
+    
         var gameOverScene = CCBReader.load("GameOver") as! GameOver
-        var newScene : CCScene = CCScene()
-        newScene.addChild(gameOverScene)
         gameOverScene.score = score
-        CCDirector.sharedDirector().presentScene(newScene)
+        self.addChild(gameOverScene)
+        
+        
+        
+//        var gameOverScene = CCBReader.load("GameOver") as! GameOver
+//        var newScene : CCScene = CCScene()
+//        newScene.addChild(gameOverScene)
+//        gameOverScene.score = score
+//        CCDirector.sharedDirector().presentScene(newScene)
         //
     }
     
