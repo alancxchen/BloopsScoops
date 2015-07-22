@@ -9,5 +9,10 @@
 import UIKit
 
 class Powerup: CCSprite {
-   // var timeCreated : CCTime = 0.0
+    var gotHit = false {
+        didSet {
+            self.removeFromParent()
+        }
+    }
+    
 }
