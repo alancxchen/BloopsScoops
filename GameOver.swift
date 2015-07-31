@@ -19,7 +19,7 @@ class GameOver: CCNode {
     
     var restartButton: CCButton!
     func restart() {
-        var gamePlayScene = CCBReader.loadAsScene("Gameplay")
+        var gamePlayScene = CCBReader.loadAsScene("Scenes/Gameplay")
         CCDirector.sharedDirector().presentScene(gamePlayScene)
     }
     func didLoadFromCCB() {

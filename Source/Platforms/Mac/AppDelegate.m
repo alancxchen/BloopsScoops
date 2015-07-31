@@ -10,6 +10,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    
     CCDirectorMac *director = (CCDirectorMac*) [CCDirector sharedDirector];
 
     // enable FPS and SPF
@@ -35,7 +36,6 @@
 
     // Configure CCFileUtils to work with SpriteBuilder
     [CCBReader configureCCFileUtils];
-    
     [[CCPackageManager sharedManager] loadPackages];
 
     [director runWithScene:[CCBReader loadAsScene:@"MainScene"]];

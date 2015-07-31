@@ -95,6 +95,7 @@
 		BC5399DC1A44DCC90063F482 /* JavaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D71A44DCC90063F482 /* JavaKit.framework */; };
 		E719F6381B55B18500E1819B /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = E719F6371B55B18500E1819B /* Apple.swift */; };
 		E719F6421B56C3BF00E1819B /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E719F6411B56C3BF00E1819B /* GameOver.swift */; };
+		E7C191A81B6BDDB6000D6F96 /* invincibleCone.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C191A71B6BDDB6000D6F96 /* invincibleCone.swift */; };
 		E7CB56C21B54317F00728BA3 /* Cone.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CB56C11B54317F00728BA3 /* Cone.swift */; };
 		E7CB56C81B54341E00728BA3 /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CB56C71B54341E00728BA3 /* Gameplay.swift */; };
 		E7CB56D01B545CFE00728BA3 /* Scoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CB56CF1B545CFE00728BA3 /* Scoop.swift */; };
@@ -219,6 +220,7 @@
 		D352B48019EC608A00829775 /* MetalShaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MetalShaders; path = Source/MetalShaders; sourceTree = "<group>"; };
 		E719F6371B55B18500E1819B /* Apple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 		E719F6411B56C3BF00E1819B /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
+		E7C191A71B6BDDB6000D6F96 /* invincibleCone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = invincibleCone.swift; sourceTree = "<group>"; };
 		E7CB56C11B54317F00728BA3 /* Cone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cone.swift; path = Source/Cone.swift; sourceTree = "<group>"; };
 		E7CB56C71B54341E00728BA3 /* Gameplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gameplay.swift; sourceTree = "<group>"; };
 		E7CB56CF1B545CFE00728BA3 /* Scoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scoop.swift; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 				7A046D7519E84C36004C4763 /* MainScene.swift */,
 				D352B48019EC608A00829775 /* MetalShaders */,
 				E7CB56C11B54317F00728BA3 /* Cone.swift */,
+				E7C191A71B6BDDB6000D6F96 /* invincibleCone.swift */,
 				E7CB56C71B54341E00728BA3 /* Gameplay.swift */,
 				E7F706E61B5D3CB800ED3C68 /* Powerup.swift */,
 				E719F6411B56C3BF00E1819B /* GameOver.swift */,
@@ -620,6 +623,7 @@
 		B77F1B2617B978D7009739AE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Apportable;
 				TargetAttributes = {
@@ -627,6 +631,7 @@
 						CreatedOnToolsVersion = 6.0.1;
 					};
 					B77F1B2D17B978D7009739AE = {
+						DevelopmentTeam = FTVQ9SW68U;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 0;
@@ -831,6 +836,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B73789871807631A0076A88C /* main.m in Sources */,
+				E7C191A81B6BDDB6000D6F96 /* invincibleCone.swift in Sources */,
 				7A046D7919E84ED5004C4763 /* MainScene.swift in Sources */,
 				E719F6381B55B18500E1819B /* Apple.swift in Sources */,
 				E7CB56C21B54317F00728BA3 /* Cone.swift in Sources */,
