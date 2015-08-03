@@ -79,12 +79,6 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         super.onEnter()
         var coneX = self.contentSizeInPoints.width / 2
         cone.position = CGPoint(x: coneX, y: cone.position.y)
-        
-        var invinciblecone = CCBReader.load("Cones/invinciblecone") as! invincibleCone
-        invinciblecone.position = CGPoint(x: 100,y: 100)
-        self.addChild(invinciblecone)
-        
-        
     }
     
     func pause() {
@@ -220,11 +214,11 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                     createDrops()
                     
                 }
-                if counter % frequencyOfApples == 0 && counter > 750 {
-                    if !isInvincible {
-                        createApples()
-                    }
-                }
+//                if counter % frequencyOfApples == 0 && counter > 750 {
+//                    if !isInvincible {
+//                        createApples()
+//                    }
+//                }
             }
         }
     }
@@ -491,7 +485,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, invincibilityPowerup: Powerup!, coneCollision: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             print("hit invincible")
-            var invinciblecone = CCBReader.load("Cones/invinciblecone") as! invincibleCone
+            var invinciblecone = CCBReader.load("Cones/invinciblecone", owner: self) as! invincibleCone
             self.ccPhysicsNode.addChild(invinciblecone)
             invinciblecone.position = self.cone.position
             self.cone.removeFromParent()
@@ -516,18 +510,25 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             onePoint.physicsBody.collisionType = ""
             onePoint.physicsBody.type = .Static
-            
-            var copy = onePoint
-            copy.position = CGPoint(x: 0 , y: 20)
-            onePoint.removeFromParent()
-            self.cone.addChild(copy)
-            
-            //onePoint.position = CGPoint(x: coneCollision.position.x, y: onePoint.position.y)
-            self.score++
-            //run animations
-            copy.animationManager.runAnimationsForSequenceNamed("plop")
-            //onePoint.removeFromParent()
-            
+            // if it is not exact
+            let distance = onePoint.position.x - coneCollision.position.x
+            if abs(distance) > 14 && !self.isInvincible {
+                if distance < 0 {
+                    onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
+                } else {
+                    onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
+                }
+                
+            }
+            else {
+                var copy = onePoint
+                copy.position = CGPoint(x: 0 , y: 20)
+                onePoint.removeFromParent()
+                self.cone.addChild(copy)
+                
+                self.score++
+                copy.animationManager.runAnimationsForSequenceNamed("plop")
+            }
         }, key: onePoint)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, twoPoints: Powerup!, ground: CCSprite!) {
@@ -559,28 +560,25 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             }, key: threePoints)
     }
     
-//    func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, middleOfCone: CCNode!, middleOfScoop : CCNode!) {
-//        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-//            print("yomom")
-//            //run animations
-//            
-//            }, key: middleOfCone)
-//    }
-//    
-    
-    
+
     func slowDownGravity() {
         ccPhysicsNode.gravity = previousGravity
     }
-    //    func slowDownApples() {
-    //        frequencyOfApples += 10
-    //    }
+
     func slowDownDrops() {
         frequencyOfDrops = previousDropFrequency
     }
+    func changeCone() {
+        var originalCone = CCBReader.load("Cones/Cone") as! Cone
+        ccPhysicsNode.addChild(originalCone)
+        originalCone.position = cone.position
+        cone.removeFromParent()
+        
+        cone = originalCone
+        
+    }
     func changeInvincible() {
         isInvincible = false
-        //fparticles.removeFromParent()
     }
     func speedUpGravity() {
         ccPhysicsNode.gravity.y -= 1000
@@ -589,23 +587,19 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         frequencyOfDrops = max(20, previousDropFrequency - 20)
     }
     func changeFromInvincible() {
+        cone.animationManager.runAnimationsForSequenceNamed("transition")
+        var gravityTimer1 = NSTimer.scheduledTimerWithTimeInterval(1.3, target: self, selector: Selector("slowDownGravity"), userInfo: nil, repeats: false)
         
-        var gravityTimer1 = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: Selector("slowDownGravity"), userInfo: nil, repeats: false)
+        var dropTimer1 = NSTimer.scheduledTimerWithTimeInterval(1.3, target: self, selector: Selector("slowDownDrops"), userInfo: nil, repeats: false)
         
-        var dropTimer1 = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: Selector("slowDownDrops"), userInfo: nil, repeats: false)
-        
-        var timer3 = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: Selector("changeInvincible"), userInfo: nil, repeats: false)
+        var timer3 = NSTimer.scheduledTimerWithTimeInterval(1.3, target: self, selector: Selector("changeInvincible"), userInfo: nil, repeats: false)
         
     }
     func invincible() {
         isInvincible = true
-        var timer = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: Selector("changeFromInvincible"), userInfo: nil, repeats: false)
+        var timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("changeFromInvincible"), userInfo: nil, repeats: false)
         var timer3 = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("speedUpGravity"), userInfo: nil, repeats: false)
         var dropTimer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: Selector("speedUpDrops"), userInfo: nil, repeats: false)
-        //        particles = CCBReader.load("invincibility") as! CCParticleSystem
-        //        particles.autoRemoveOnFinish = false
-        //        particles.position = cone.position
-        // self.addChild(particles)
         previousGravity = ccPhysicsNode.gravity
         previousDropFrequency = frequencyOfDrops
         previousAppleFrequency = frequencyOfApples

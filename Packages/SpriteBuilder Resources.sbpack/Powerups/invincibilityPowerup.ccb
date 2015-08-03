@@ -701,8 +701,6 @@
 						<string>ccbResources/ccbParticleFire.png</string>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>
@@ -729,6 +727,7 @@
 			<array>
 				<string>coneCollision</string>
 				<string>ground</string>
+				<string>cone</string>
 			</array>
 			<key>collisionType</key>
 			<string>invincibilityPowerup</string>
@@ -849,6 +848,8 @@
 				<array/>
 			</dict>
 		</array>
+		<key>selected</key>
+		<true/>
 	</dict>
 	<key>notes</key>
 	<array/>
