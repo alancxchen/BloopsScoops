@@ -269,8 +269,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -395,8 +393,8 @@
 								<string>Point</string>
 								<key>value</key>
 								<array>
-									<real>0.0</real>
-									<real>0.25</real>
+									<real>0.0099999997764825821</real>
+									<real>0.30000001192092896</real>
 								</array>
 							</dict>
 							<dict>
@@ -868,7 +866,7 @@
 						<key>type</key>
 						<string>FontTTF</string>
 						<key>value</key>
-						<string>Courier</string>
+						<string>Courier-Bold</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -888,6 +886,19 @@
 						<string>Check</string>
 						<key>value</key>
 						<false/>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>color</string>
+						<key>type</key>
+						<string>Color3</string>
+						<key>value</key>
+						<array>
+							<real>0.0</real>
+							<real>0.0</real>
+							<real>0.0</real>
+							<real>1</real>
+						</array>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -928,7 +939,7 @@
 							<real>0.0</real>
 							<real>0.0</real>
 							<real>0.0</real>
-							<real>0.0</real>
+							<real>0.4699999988079071</real>
 						</array>
 					</dict>
 					<dict>
@@ -938,10 +949,10 @@
 						<string>Color4</string>
 						<key>value</key>
 						<array>
+							<real>1</real>
+							<real>1</real>
+							<real>1</real>
 							<real>0.0</real>
-							<real>0.0</real>
-							<real>0.0</real>
-							<real>0.4699999988079071</real>
 						</array>
 					</dict>
 					<dict>
@@ -1419,7 +1430,7 @@
 						<key>type</key>
 						<string>FontTTF</string>
 						<key>value</key>
-						<string>Courier</string>
+						<string>assets/hack/Hack-Regular.ttf</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -1729,7 +1740,7 @@
 								<key>type</key>
 								<string>FontTTF</string>
 								<key>value</key>
-								<string>Cochin-BoldItalic</string>
+								<string>assets/hack/Hack-Oblique.ttf</string>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -1809,9 +1820,9 @@
 								<string>Color4</string>
 								<key>value</key>
 								<array>
-									<real>1</real>
-									<real>1</real>
-									<real>1</real>
+									<real>0.0</real>
+									<real>0.0</real>
+									<real>0.0</real>
 									<real>1</real>
 								</array>
 							</dict>
@@ -2057,7 +2068,7 @@
 								<key>type</key>
 								<string>FontTTF</string>
 								<key>value</key>
-								<string>Cochin-Italic</string>
+								<string>assets/hack/Hack-Oblique.ttf</string>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -2137,9 +2148,9 @@
 								<string>Color4</string>
 								<key>value</key>
 								<array>
-									<real>1</real>
-									<real>1</real>
-									<real>1</real>
+									<real>0.0</real>
+									<real>0.0</real>
+									<real>0.0</real>
 									<real>1</real>
 								</array>
 							</dict>
@@ -2385,7 +2396,7 @@
 								<key>type</key>
 								<string>FontTTF</string>
 								<key>value</key>
-								<string>Cochin-Italic</string>
+								<string>assets/hack/Hack-Oblique.ttf</string>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -2465,9 +2476,9 @@
 								<string>Color4</string>
 								<key>value</key>
 								<array>
-									<real>1</real>
-									<real>1</real>
-									<real>1</real>
+									<real>0.0</real>
+									<real>0.0</real>
+									<real>0.0</real>
 									<real>1</real>
 								</array>
 							</dict>
@@ -2648,7 +2659,7 @@
 								<key>type</key>
 								<string>Check</string>
 								<key>value</key>
-								<false/>
+								<true/>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -2713,7 +2724,7 @@
 								<key>type</key>
 								<string>FontTTF</string>
 								<key>value</key>
-								<string>Cochin-Italic</string>
+								<string>assets/hack/Hack-Oblique.ttf</string>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -2722,7 +2733,7 @@
 								<string>FloatScale</string>
 								<key>value</key>
 								<array>
-									<real>62</real>
+									<real>52</real>
 									<integer>0</integer>
 								</array>
 							</dict>
@@ -2742,7 +2753,7 @@
 								<key>type</key>
 								<string>Float</string>
 								<key>value</key>
-								<real>0.0</real>
+								<real>0.90000009536743164</real>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -2754,7 +2765,7 @@
 									<real>1</real>
 									<real>1</real>
 									<real>1</real>
-									<real>0.0</real>
+									<real>0.90000009536743164</real>
 								</array>
 							</dict>
 							<dict>
@@ -2793,9 +2804,9 @@
 								<string>Color4</string>
 								<key>value</key>
 								<array>
-									<real>1</real>
-									<real>1</real>
-									<real>1</real>
+									<real>0.0</real>
+									<real>0.0</real>
+									<real>0.0</real>
 									<real>1</real>
 								</array>
 							</dict>
@@ -2862,6 +2873,8 @@
 								</array>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 						<key>seqExpanded</key>
 						<true/>
 					</dict>
@@ -3136,9 +3149,9 @@
 			<key>name</key>
 			<string>321</string>
 			<key>offset</key>
-			<real>1.140625</real>
+			<real>1.0250625610351562</real>
 			<key>position</key>
-			<real>4</real>
+			<real>3.0999999046325684</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

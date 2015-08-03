@@ -295,13 +295,13 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         let random = Int(CCRANDOM_0_1() * Float(3))
         
         var randX = CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - 50) + 25
-        if random == 0 {
-            let powerup = CCBReader.load("Powerups/explosionScoop") as! Powerup
-            // var randY = CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.height - 200) + 175
-            let y = self.contentSizeInPoints.height + 100
-            powerup.position = CGPoint(x: randX, y: y)
-            ccPhysicsNode.addChild(powerup)
-        }
+//        if random == 0 {
+//            let powerup = CCBReader.load("Powerups/explosionScoop") as! Powerup
+//            // var randY = CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.height - 200) + 175
+//            let y = self.contentSizeInPoints.height + 100
+//            powerup.position = CGPoint(x: randX, y: y)
+//            ccPhysicsNode.addChild(powerup)
+//        }
         if random == 1 {
             let powerup = CCBReader.load("Powerups/minusOneScoop") as! Powerup
             let halfScreenHeight = self.contentSizeInPoints.height / 2
@@ -439,41 +439,41 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             appleCollision.removeFromParent()
             }, key: appleCollision)
     }
-    func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, explosionScoop : CCSprite!, coneCollision: CCSprite!) {
-        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            explosionScoop.removeFromParent()
-            self.explode()
-            }, key: explosionScoop)
-        
-    }
-    func explode() {
-        
-        for child in ccPhysicsNode.children {
-            if child as! NSObject != cone && child as! NSObject != ground && child as! NSObject != ground2{
-                score++
-                child.removeFromParent()
-            }
-            
-        }
-        counter = 0
-        var oldDropFrequency = frequencyOfDrops
-        var oldAppleFrequency = frequencyOfApples
-        ccPhysicsNode.gravity = CGPoint(x: 0, y: -300)
-        frequencyOfDrops = 30
-        //insert animation here
-        while frequencyOfDrops > oldDropFrequency {
-            if counter % 50 == 0 {
-                frequencyOfDrops -= 5
-            }
-        }
-        
-    }
-    func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, explosionScoop : CCSprite!, ground: CCSprite!) {
-        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            explosionScoop.removeFromParent()
-            }, key: explosionScoop)
-        
-    }
+//    func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, explosionScoop : CCSprite!, coneCollision: CCSprite!) {
+//        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+//            explosionScoop.removeFromParent()
+//            self.explode()
+//            }, key: explosionScoop)
+//        
+//    }
+//    func explode() {
+//        
+//        for child in ccPhysicsNode.children {
+//            if child as! NSObject != cone && child as! NSObject != ground && child as! NSObject != ground2{
+//                score++
+//                child.removeFromParent()
+//            }
+//            
+//        }
+//        counter = 0
+//        var oldDropFrequency = frequencyOfDrops
+//        var oldAppleFrequency = frequencyOfApples
+//        ccPhysicsNode.gravity = CGPoint(x: 0, y: -300)
+//        frequencyOfDrops = 30
+//        //insert animation here
+//        while frequencyOfDrops > oldDropFrequency {
+//            if counter % 50 == 0 {
+//                frequencyOfDrops -= 5
+//            }
+//        }
+//        
+//    }
+//    func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, explosionScoop : CCSprite!, ground: CCSprite!) {
+//        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+//            explosionScoop.removeFromParent()
+//            }, key: explosionScoop)
+//        
+//    }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, invincibilityPowerup: Powerup!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             
