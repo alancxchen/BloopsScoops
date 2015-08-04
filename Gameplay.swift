@@ -197,6 +197,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     override func update(delta: CCTime) {
         //        println(scoopsHit)
         //        println(isPaused)
+        println(frequencyOfDrops)
         println(ccPhysicsNode.gravity)
         if gameState != .Paused && gameState != .GameOver && !isPaused {
             if gameState == .Playing {
@@ -312,29 +313,29 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         let random = CCRANDOM_0_1() * 100
         // println(random)
         var drop = CCBReader.load("Scoops/BlueScoop3")
-//        
-//        if random < 100 {
-//            drop = CCBReader.load("Scoops/MintScoop")
-//        }
-//        if random < 92 {
-//            drop = CCBReader.load("Scoops/PinkScoop")
-//        }
-//        if random < 80 {
-//            drop = CCBReader.load("Scoops/VanillaScoop")
-//        }
-//        if random < 64 {
-//            drop = CCBReader.load("Scoops/ChocolateScoop")
-//            
-//        }
-//        if random < 48 {
-//            drop = CCBReader.load("Scoops/PurpleScoop")
-//        }
-//        if random < 32 {
-//            drop = CCBReader.load("Scoops/BlueScoop3")
-//        }
-//        if random < 16 {
-//            drop = CCBReader.load("Scoops/RedScoop")
-//        }
+        
+        if random < 100 {
+            drop = CCBReader.load("Scoops/MintScoop")
+        }
+        if random < 92 {
+            drop = CCBReader.load("Scoops/PinkScoop")
+        }
+        if random < 80 {
+            drop = CCBReader.load("Scoops/VanillaScoop")
+        }
+        if random < 64 {
+            drop = CCBReader.load("Scoops/ChocolateScoop")
+            
+        }
+        if random < 48 {
+            drop = CCBReader.load("Scoops/PurpleScoop")
+        }
+        if random < 32 {
+            drop = CCBReader.load("Scoops/BlueScoop3")
+        }
+        if random < 16 {
+            drop = CCBReader.load("Scoops/RedScoop")
+        }
         
         //so that the drop isnt on the sides
         var randomX = dropWidth / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - dropWidth)
@@ -509,8 +510,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, onePoint: CCNode!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-                //animation
-                onePoint.removeFromParent()
+            //animation
+            onePoint.removeFromParent()
             if !self.isInvincible {
                 self.scoopsHit++
             }
@@ -539,37 +540,76 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 self.score++
                 copy.animationManager.runAnimationsForSequenceNamed("plop")
             }
-        }, key: onePoint)
+            }, key: onePoint)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, twoPoints: CCNode!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+            //animation
             twoPoints.removeFromParent()
-            
+            if !self.isInvincible {
+                self.scoopsHit++
+            }
             }, key: twoPoints)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, twoPoints: CCNode!, coneCollision: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            self.score += 2
-            //run animations
-            twoPoints.removeFromParent()
-            
+            twoPoints.physicsBody.collisionType = ""
+            twoPoints.physicsBody.type = .Static
+            // if it is not exact
+            let distance = twoPoints.position.x - coneCollision.position.x
+            if abs(distance) > 20 && !self.isInvincible {
+                if distance < 0 {
+                    twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
+                } else {
+                    twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
+                }
+                self.scoopsHit++
+            }
+            else {
+                var copy = twoPoints
+                copy.position = CGPoint(x: 0 , y: 20)
+                twoPoints.removeFromParent()
+                self.cone.addChild(copy)
+                
+                self.score += 2 
+                copy.animationManager.runAnimationsForSequenceNamed("plop")
+            }
             }, key: twoPoints)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, threePoints: CCNode!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+            //animation
             threePoints.removeFromParent()
-            
+            if !self.isInvincible {
+                self.scoopsHit++
+            }
             }, key: threePoints)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, threePoints: CCNode!, coneCollision: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            self.score += 2
-            //run animations
-            threePoints.removeFromParent()
-            
+            threePoints.physicsBody.collisionType = ""
+            threePoints.physicsBody.type = .Static
+            // if it is not exact
+            let distance = threePoints.position.x - coneCollision.position.x
+            if abs(distance) > 20 && !self.isInvincible {
+                if distance < 0 {
+                    threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
+                } else {
+                    threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
+                }
+                self.scoopsHit++
+            }
+            else {
+                var copy = threePoints
+                copy.position = CGPoint(x: 0 , y: 20)
+                threePoints.removeFromParent()
+                self.cone.addChild(copy)
+                
+                self.score += 3
+                copy.animationManager.runAnimationsForSequenceNamed("plop")
+            }
             }, key: threePoints)
     }
-    
 
     func slowDownGravity() {
         ccPhysicsNode.gravity = previousGravity

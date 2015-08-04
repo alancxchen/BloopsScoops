@@ -773,7 +773,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>assets/Scoops/BlueScoop.png</string>
+									<string>assets/Scoops/PinkScoop.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -939,7 +939,7 @@
 						<key>customClass</key>
 						<string></string>
 						<key>displayName</key>
-						<string>+1</string>
+						<string>+3</string>
 						<key>memberVarAssignmentName</key>
 						<string></string>
 						<key>memberVarAssignmentType</key>
@@ -1014,7 +1014,7 @@
 								<string>Text</string>
 								<key>value</key>
 								<array>
-									<string>+1
+									<string>+3
 </string>
 									<false/>
 								</array>
@@ -1034,7 +1034,7 @@
 								<string>FloatScale</string>
 								<key>value</key>
 								<array>
-									<real>30</real>
+									<real>40</real>
 									<integer>0</integer>
 								</array>
 							</dict>
@@ -1105,9 +1105,9 @@
 								<string>Color4</string>
 								<key>value</key>
 								<array>
-									<real>0.0</real>
-									<real>0.0</real>
-									<real>0.0</real>
+									<real>1</real>
+									<real>0.1472453773021698</real>
+									<real>0.21209964156150818</real>
 									<real>1</real>
 								</array>
 							</dict>
@@ -1288,7 +1288,7 @@
 				<string>cone</string>
 			</array>
 			<key>collisionType</key>
-			<string>onePoint</string>
+			<string>threePoints</string>
 			<key>cornerRadius</key>
 			<real>0.0</real>
 			<key>density</key>
@@ -1402,6 +1402,8 @@
 				</array>
 			</dict>
 		</array>
+		<key>selected</key>
+		<true/>
 	</dict>
 	<key>notes</key>
 	<array/>

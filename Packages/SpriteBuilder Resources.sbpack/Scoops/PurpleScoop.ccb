@@ -773,7 +773,7 @@
 								<key>value</key>
 								<array>
 									<string></string>
-									<string>assets/Scoops/BlueScoop.png</string>
+									<string>assets/Scoops/PurpleScoop.png</string>
 								</array>
 							</dict>
 							<dict>
@@ -809,6 +809,8 @@
 								<array/>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 						<key>seqExpanded</key>
 						<true/>
 					</dict>
