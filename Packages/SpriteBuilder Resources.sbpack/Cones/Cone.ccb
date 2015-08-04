@@ -167,6 +167,7 @@
 			<key>collisionCategories</key>
 			<array>
 				<string>cone</string>
+				<string>coneCollision</string>
 			</array>
 			<key>collisionMask</key>
 			<array>

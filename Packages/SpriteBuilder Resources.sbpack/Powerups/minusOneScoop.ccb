@@ -59,7 +59,7 @@
 			<key>allowsRotation</key>
 			<true/>
 			<key>bodyShape</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>collisionCategories</key>
 			<array>
 				<string>powerupScoop</string>
@@ -73,7 +73,7 @@
 			<key>collisionType</key>
 			<string>minusOneScoop</string>
 			<key>cornerRadius</key>
-			<real>22.372182846069336</real>
+			<real>0.0</real>
 			<key>density</key>
 			<real>1</real>
 			<key>dynamic</key>
@@ -85,12 +85,43 @@
 			<key>points</key>
 			<array>
 				<array>
-					<real>30.5</real>
-					<real>21.5</real>
+					<real>1.2178827524185181</real>
+					<real>1.6525862216949463</real>
+				</array>
+				<array>
+					<real>12.365275382995605</real>
+					<real>38.619041442871094</real>
+				</array>
+				<array>
+					<real>47.725791931152344</real>
+					<real>37.955001831054688</real>
+				</array>
+				<array>
+					<real>58.560787200927734</real>
+					<real>2.5238442420959473</real>
 				</array>
 			</array>
 			<key>polygons</key>
-			<array/>
+			<array>
+				<array>
+					<array>
+						<real>58.560787200927734</real>
+						<real>2.5238442420959473</real>
+					</array>
+					<array>
+						<real>47.725791931152344</real>
+						<real>37.955001831054688</real>
+					</array>
+					<array>
+						<real>12.365275382995605</real>
+						<real>38.619041442871094</real>
+					</array>
+					<array>
+						<real>1.2178827524185181</real>
+						<real>1.6525862216949463</real>
+					</array>
+				</array>
+			</array>
 		</dict>
 		<key>properties</key>
 		<array>
@@ -230,24 +261,7 @@
 			<key>callbackChannel</key>
 			<dict>
 				<key>keyframes</key>
-				<array>
-					<dict>
-						<key>easing</key>
-						<dict>
-							<key>type</key>
-							<integer>0</integer>
-						</dict>
-						<key>time</key>
-						<real>3</real>
-						<key>type</key>
-						<integer>12</integer>
-						<key>value</key>
-						<array>
-							<string>removeFromParent</string>
-							<integer>1</integer>
-						</array>
-					</dict>
-				</array>
+				<array/>
 				<key>type</key>
 				<integer>12</integer>
 			</dict>
@@ -258,9 +272,9 @@
 			<key>name</key>
 			<string>Default Timeline</string>
 			<key>offset</key>
-			<real>0.0</real>
+			<real>0.140625</real>
 			<key>position</key>
-			<real>0.0</real>
+			<real>3</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
