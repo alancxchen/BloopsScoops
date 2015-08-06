@@ -25,8 +25,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     weak var two : CCLabelTTF!
     weak var three : CCLabelTTF!
     weak var go : CCLabelTTF!
+    weak var livesLeft: CCLabelTTF!
     
-    
+    var beatHighScore = false
     var yScaleValue : CGFloat = 200
     var counter = 0
     var duration : CGFloat = 0
@@ -72,6 +73,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         //Necessary for ccphysicsCollisionDelegate
         ccPhysicsNode.collisionDelegate = self
         ccPhysicsNode.gravity = CGPoint(x: 0, y: -200)
+        counter = 0
         //        ccPhysicsNode.gravity = CGPoint(x: 0, y: 0)
     }
     
@@ -116,51 +118,59 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         pauseButton.visible = true
     }
     
-    var scoopsHit : Int = 0 {
+    var lives : Int = 5 {
         didSet {
-            //3 strikes
-            if !strikesLoaded {
-                
-                strike1 = CCBReader.load("Apples/cone")
-                strike1.position = ccp(self.contentSizeInPoints.width / 4, self.contentSizeInPoints.height * 90 / 100)
-                scene.addChild(strike1)
-                
-                
-                strike2 = CCBReader.load("Apples/cone")
-                strike2.position = ccp(self.contentSizeInPoints.width / 2, self.contentSizeInPoints.height * 90 / 100)
-                scene.addChild(strike2)
-                
-                strike3 = CCBReader.load("Apples/cone")
-                strike3.position = ccp(self.contentSizeInPoints.width * 3 / 4, self.contentSizeInPoints.height * 90 / 100)
-                scene.addChild(strike3)
-                strikesLoaded = true
-            }
-            if scoopsHit == 0 {
-                strike1.opacity = 1
-                strike2.opacity = 1
-                strike3.opacity = 1
-            }
-            if scoopsHit == 1 {
-                strike1.opacity = 0.25
-                
-                //changes the other scoops because of minusOneX Powerup
-                strike2.opacity = 1
-                strike3.opacity = 1
-            }
-            if scoopsHit == 2 {
-                strike2.opacity = 0.25
-            }
-            if scoopsHit == 3 {
-                strike3.opacity = 0.25
-                
+            livesLeft.string = "\(lives)"
+            if lives == 0 {
                 var timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: Selector("triggerGameOver"), userInfo: nil, repeats: false)
-                
             }
+            //3 strikes
+//            if !strikesLoaded {
+//                
+//                strike1 = CCBReader.load("Apples/cone")
+//                strike1.position = ccp(self.contentSizeInPoints.width / 4, self.contentSizeInPoints.height * 90 / 100)
+//                scene.addChild(strike1)
+//                
+//                
+//                strike2 = CCBReader.load("Apples/cone")
+//                strike2.position = ccp(self.contentSizeInPoints.width / 2, self.contentSizeInPoints.height * 90 / 100)
+//                scene.addChild(strike2)
+//                
+//                strike3 = CCBReader.load("Apples/cone")
+//                strike3.position = ccp(self.contentSizeInPoints.width * 3 / 4, self.contentSizeInPoints.height * 90 / 100)
+//                scene.addChild(strike3)
+//                strikesLoaded = true
+//            }
+//            if lives == 0 {
+//                strike1.opacity = 1
+//                strike2.opacity = 1
+//                strike3.opacity = 1
+//            }
+//            if lives == 1 {
+//                strike1.opacity = 0.25
+//                
+//                //changes the other scoops because of minusOneX Powerup
+//                strike2.opacity = 1
+//                strike3.opacity = 1
+//            }
+//            if lives == 2 {
+//                strike2.opacity = 0.25
+//            }
+//            if lives == 3 {
+//                strike3.opacity = 0.25
+//                
+//                var timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: Selector("triggerGameOver"), userInfo: nil, repeats: false)
+//                
+//            }
         }
     }
     
     var score : Int = 0 {
         didSet {
+            if score > highScore {
+                highScore = score
+                beatHighScore = true
+            }
             scoreLabel.string = "\(score)"
             var dropSubtractFrequency = 2
             var appleSubtractFrequency = 2
@@ -173,15 +183,12 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             }
             if score % 2 == 0 && !isInvincible{
                 //spawnPowerUp()
-                spawnPowerUp()
+                //spawnPowerUp()
                 if ccPhysicsNode.gravity.y < -550 {
                     gravitySubtractConstant = 20
                 }
                 ccPhysicsNode.gravity.y -= CGFloat(gravitySubtractConstant)
-                if frequencyOfDrops > 40{
-                    frequencyOfDrops -= dropSubtractFrequency
-                    
-                }
+                
 //                if frequencyOfApples > 40 {
 //                    if frequencyOfApples < 33 {
 //                        appleSubtractFrequency = 1
@@ -193,26 +200,34 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             
         }
     }
+    var highScore: Int = NSUserDefaults.standardUserDefaults().integerForKey("myHighScore") ?? 0 {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setInteger(highScore, forKey:"myHighScore")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
     
     override func update(delta: CCTime) {
-        //        println(scoopsHit)
+        
+        //        println(lives)
         //        println(isPaused)
         println(frequencyOfDrops)
         println(ccPhysicsNode.gravity)
         if gameState != .Paused && gameState != .GameOver && !isPaused {
+        
+           
             if gameState == .Playing {
+                if counter % 100 == 0 {
+                    frequencyOfDrops -= 1
+                }
                 counter++
                 duration = duration + CGFloat(delta)
                 
                 if counter % frequencyOfDrops == 0 {
+                    
                     createDrops()
                     
                 }
-//                if counter % frequencyOfApples == 0 && counter > 750 {
-//                    if !isInvincible {
-//                        createApples()
-//                    }
-//                }
             }
         }
     }
@@ -223,16 +238,15 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 touchBeginTimestamp = NSDate().timeIntervalSince1970
                 gameState = .Playing
                 startInstructions.runAction(CCActionFadeOut(duration: 0.3))
-                scoopsHit = 0
+                lives = 5
                 //NSDate().timeIntervalSince1970
                 pauseButton.visible = true
                 pauseButton.opacity = 0
                 pauseButton.runAction(CCActionFadeIn(duration: 0.3))
             }
             let xPos = touch.locationInWorld().x
-            if touch.locationInWorld().y < self.contentSizeInPoints.height / 2 {
-                cone.position = CGPoint(x: xPos, y: cone.position.y)
-            }
+            cone.position = CGPoint(x: xPos, y: cone.position.y)
+            
             touchBeginPos = touch.locationInWorld()
         }
     }
@@ -250,9 +264,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
 //                velocity = distance  / CGFloat(time)
 //            }
 //            
-            if touch.locationInWorld().y < self.contentSizeInPoints.height / 2 {
-                cone.position = CGPoint(x: xPos, y: cone.position.y)
-            }
+        
+            cone.position = CGPoint(x: xPos, y: cone.position.y)
+    
             if particles != nil {
                 particles.position = cone.position
             }
@@ -312,7 +326,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     func createDrops() {
         let random = CCRANDOM_0_1() * 100
         // println(random)
-        var drop = CCBReader.load("Scoops/BlueScoop3")
+        var drop = CCBReader.load("Scoops/BlueScoop")
         
         if random < 100 {
             drop = CCBReader.load("Scoops/MintScoop")
@@ -331,7 +345,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             drop = CCBReader.load("Scoops/PurpleScoop")
         }
         if random < 32 {
-            drop = CCBReader.load("Scoops/BlueScoop3")
+            drop = CCBReader.load("Scoops/BlueScoop")
         }
         if random < 16 {
             drop = CCBReader.load("Scoops/RedScoop")
@@ -339,7 +353,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         
         //so that the drop isnt on the sides
         var randomX = dropWidth / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - dropWidth)
-        while randomX < lastApplePosition.x + 50 && randomX > lastApplePosition.x - 50 {
+        while abs(randomX-lastDropPosition.x) > self.contentSizeInPoints.width / 2 {
             randomX = dropWidth / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - dropWidth)
         }
         let launchDirection = CGPoint(x: 0, y: 1)
@@ -408,7 +422,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             //debugging apple movement
             if !self.isInvincible {
-                self.scoopsHit++
+                self.lives = max(self.lives - 1 , 0)
             }
             appleCollision.removeFromParent()
             }, key: appleCollision)
@@ -417,7 +431,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             //Debugging apple movement
             if !self.isInvincible {
-                self.scoopsHit++
+                self.lives--
             }
             scoopCollision.removeFromParent()
             }, key: scoopCollision)
@@ -490,9 +504,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     
     func ccPhysicsCollisionBegin (pair: CCPhysicsCollisionPair!, minusOneScoop: Powerup!, coneCollision: CCSprite!) -> Bool{
-        println("HIT")
+       // println("HIT")
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            println("YO")
+          //  println("YO")
             minusOneScoop.removeFromParent()
             self.minusOneX()
             
@@ -513,7 +527,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             //animation
             onePoint.removeFromParent()
             if !self.isInvincible {
-                self.scoopsHit++
+                self.lives--
             }
             }, key: onePoint)
     }
@@ -523,13 +537,13 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             onePoint.physicsBody.type = .Static
             // if it is not exact
             let distance = onePoint.position.x - coneCollision.position.x
-            if abs(distance) > 20 && !self.isInvincible {
+            if abs(distance) > 24 && !self.isInvincible {
                 if distance < 0 {
                     onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
                 } else {
                     onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
-                self.scoopsHit++
+                self.lives--
             }
             else {
                 var copy = onePoint
@@ -537,8 +551,14 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 onePoint.removeFromParent()
                 self.cone.addChild(copy)
                 
-                self.score++
-                copy.animationManager.runAnimationsForSequenceNamed("plop")
+               
+                if self.isInvincible {
+                    copy.animationManager.runAnimationsForSequenceNamed("plop2")
+                    self.score += 2
+                } else {
+                    copy.animationManager.runAnimationsForSequenceNamed("plop")
+                    self.score++
+                }
             }
             }, key: onePoint)
     }
@@ -547,7 +567,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             //animation
             twoPoints.removeFromParent()
             if !self.isInvincible {
-                self.scoopsHit++
+                self.lives--
             }
             }, key: twoPoints)
     }
@@ -557,13 +577,13 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             twoPoints.physicsBody.type = .Static
             // if it is not exact
             let distance = twoPoints.position.x - coneCollision.position.x
-            if abs(distance) > 20 && !self.isInvincible {
+            if abs(distance) > 24 && !self.isInvincible {
                 if distance < 0 {
                     twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
                 } else {
                     twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
-                self.scoopsHit++
+                self.lives--
             }
             else {
                 var copy = twoPoints
@@ -571,8 +591,13 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 twoPoints.removeFromParent()
                 self.cone.addChild(copy)
                 
-                self.score += 2 
-                copy.animationManager.runAnimationsForSequenceNamed("plop")
+                if self.isInvincible {
+                    copy.animationManager.runAnimationsForSequenceNamed("plop2")
+                    self.score += 4
+                } else {
+                    copy.animationManager.runAnimationsForSequenceNamed("plop")
+                    self.score+=2
+                }
             }
             }, key: twoPoints)
     }
@@ -581,7 +606,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             //animation
             threePoints.removeFromParent()
             if !self.isInvincible {
-                self.scoopsHit++
+                self.lives--
             }
             }, key: threePoints)
     }
@@ -591,13 +616,13 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             threePoints.physicsBody.type = .Static
             // if it is not exact
             let distance = threePoints.position.x - coneCollision.position.x
-            if abs(distance) > 20 && !self.isInvincible {
+            if abs(distance) > 24 && !self.isInvincible {
                 if distance < 0 {
                     threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
                 } else {
                     threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
-                self.scoopsHit++
+                self.lives--
             }
             else {
                 var copy = threePoints
@@ -605,8 +630,13 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 threePoints.removeFromParent()
                 self.cone.addChild(copy)
                 
-                self.score += 3
-                copy.animationManager.runAnimationsForSequenceNamed("plop")
+                if self.isInvincible {
+                    copy.animationManager.runAnimationsForSequenceNamed("plop2")
+                    self.score += 5
+                } else {
+                    copy.animationManager.runAnimationsForSequenceNamed("plop")
+                    self.score += 3
+                }
             }
             }, key: threePoints)
     }
@@ -616,7 +646,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
 
     func slowDownDrops() {
-        frequencyOfDrops = previousDropFrequency - 10
+        frequencyOfDrops = previousDropFrequency + 10
     }
     func changeCone() {
         var originalCone = CCBReader.load("Cones/Cone") as! Cone
@@ -656,21 +686,24 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     
     func minusOneX() {
-        scoopsHit = max(scoopsHit - 1, 0)
+        lives = lives + 1
     }
     
     func triggerGameOver() {
         gameState = .GameOver
         // give the game over menu
-        strike1.removeFromParent()
-        strike2.removeFromParent()
-        strike3.removeFromParent()
+//        strike1.removeFromParent()
+//        strike2.removeFromParent()
+//        strike3.removeFromParent()
         pauseButton.visible = false
         scoreLabel.visible = false
-        CCDirector.sharedDirector().pause()
+        ccPhysicsNode.paused = true
         
         var gameOverScene = CCBReader.load("Scenes/GameOver") as! GameOver
+        gameOverScene.beatHighScore = beatHighScore
         gameOverScene.score = score
+        gameOverScene.highScore = highScore
+        
         self.addChild(gameOverScene)
         
     }
