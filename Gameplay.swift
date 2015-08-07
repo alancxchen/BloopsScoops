@@ -26,10 +26,11 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     weak var three : CCLabelTTF!
     weak var go : CCLabelTTF!
     weak var livesLeft: CCLabelTTF!
-    
+    weak var livesNode: CCNodeColor!
     var beatHighScore = false
     var yScaleValue : CGFloat = 200
     var counter = 0
+    var previousCounter = -30
     var duration : CGFloat = 0
     
     var dropHeight : CGFloat = 50
@@ -176,15 +177,11 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             var appleSubtractFrequency = 2
             let random = CCRANDOM_0_1() * 200
             var gravitySubtractConstant = 40
-            if !isInvincible {
-                if random < 5 {
-                    spawnPowerUp()
-                }
-            }
+
             if score % 2 == 0 && !isInvincible{
                 //spawnPowerUp()
                 //spawnPowerUp()
-                if ccPhysicsNode.gravity.y < -550 {
+                if ccPhysicsNode.gravity.y < -500 {
                     gravitySubtractConstant = 20
                 }
                 ccPhysicsNode.gravity.y -= CGFloat(gravitySubtractConstant)
@@ -211,23 +208,27 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         
         //        println(lives)
         //        println(isPaused)
-        println(frequencyOfDrops)
-        println(ccPhysicsNode.gravity)
+//        println(frequencyOfDrops)
+//        println(ccPhysicsNode.gravity)
         if gameState != .Paused && gameState != .GameOver && !isPaused {
         
            
             if gameState == .Playing {
                 if counter % 100 == 0 {
-                    frequencyOfDrops -= 1
+                    if frequencyOfDrops > 27 {
+                        frequencyOfDrops -= 1
+                    }
                 }
                 counter++
                 duration = duration + CGFloat(delta)
                 
-                if counter % frequencyOfDrops == 0 {
-                    
+                if counter % frequencyOfDrops == 0 && counter - previousCounter > 18 {
+                    println(counter)
+                    println(frequencyOfDrops)
                     createDrops()
-                    
+                    previousCounter = counter
                 }
+                
             }
         }
     }
@@ -353,46 +354,54 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         
         //so that the drop isnt on the sides
         var randomX = dropWidth / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - dropWidth)
-        while abs(randomX-lastDropPosition.x) > self.contentSizeInPoints.width / 2 {
+        while abs(randomX-lastDropPosition.x) > self.contentSizeInPoints.width * 40 / 50 {
             randomX = dropWidth / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - dropWidth)
         }
         let launchDirection = CGPoint(x: 0, y: 1)
         let y = self.contentSizeInPoints.height + 100
-        var force = ccpMult(launchDirection, -10000)
         drop.position = CGPoint(x: randomX, y: y)
-        
-        ccPhysicsNode.addChild(drop)
         lastDropPosition = drop.position
-        drop.physicsBody.applyForce(force)
+        var rand = CCRANDOM_0_1() * 200
+       
+        if rand < 5 && score > 15{
+            if !isInvincible {
+                spawnPowerUp()
+            }
+        } else {
+            ccPhysicsNode.addChild(drop)
+            var force = ccpMult(launchDirection, -10000)
+
+            drop.physicsBody.applyForce(force)
+        }
     }
     
-    func createApples() {
-        let apple = CCBReader.load("Apples/Apple")
-        var randomX = apple.contentSizeInPoints.width / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - apple.contentSizeInPoints.width)
-        while randomX < lastDropPosition.x + 50 && randomX > lastDropPosition.x - 50 {
-            randomX = apple.contentSizeInPoints.width / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - apple.contentSizeInPoints.width)
-        }
-        let launchDirection = CGPoint(x: 0, y: 1)
-        
-        //8000 is nice for starting out, 100000 is good for fast moving dots
-        var force = ccpMult(launchDirection, 80)
-        
-        var random = Int(CCRANDOM_0_1() * 100)
-        let y = self.contentSizeInPoints.height + 100
-        apple.position = CGPoint (x: randomX, y: y)
-        if random > 90 && score > 50 && counter > 500 {
-            var exclamation = CCBReader.load("Apples/exclamation")
-            self.addChild(exclamation)
-            exclamation.position = CGPoint(x: apple.position.x, y: self.contentSizeInPoints.height - 40)
-            force = ccpMult(launchDirection, -100000)
-        }
-        
-        
-        apple.physicsBody.applyForce(force)
-        lastApplePosition = apple.position
-        ccPhysicsNode.addChild(apple)
-    }
-    
+//    func createApples() {
+//        let apple = CCBReader.load("Apples/Apple")
+//        var randomX = apple.contentSizeInPoints.width / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - apple.contentSizeInPoints.width)
+//        while randomX < lastDropPosition.x + 50 && randomX > lastDropPosition.x - 50 {
+//            randomX = apple.contentSizeInPoints.width / 2 + CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - apple.contentSizeInPoints.width)
+//        }
+//        let launchDirection = CGPoint(x: 0, y: 1)
+//        
+//        //8000 is nice for starting out, 100000 is good for fast moving dots
+//        var force = ccpMult(launchDirection, 80)
+//        
+//        var random = Int(CCRANDOM_0_1() * 100)
+//        let y = self.contentSizeInPoints.height + 100
+//        apple.position = CGPoint (x: randomX, y: y)
+//        if random > 90 && score > 50 && counter > 500 {
+//            var exclamation = CCBReader.load("Apples/exclamation")
+//            self.addChild(exclamation)
+//            exclamation.position = CGPoint(x: apple.position.x, y: self.contentSizeInPoints.height - 40)
+//            force = ccpMult(launchDirection, -100000)
+//        }
+//        
+//        
+//        apple.physicsBody.applyForce(force)
+//        lastApplePosition = apple.position
+//        ccPhysicsNode.addChild(apple)
+//    }
+//    
     func scoopRemoved(scoop: Scoop) {
         scoop.removeFromParent()
     }
@@ -418,20 +427,20 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             }, key: purpleScoopCollision)
         return true
     }
-    func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, coneCollision: CCSprite!, appleCollision: Apple!) {
-        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            //debugging apple movement
-            if !self.isInvincible {
-                self.lives = max(self.lives - 1 , 0)
-            }
-            appleCollision.removeFromParent()
-            }, key: appleCollision)
-    }
+//    func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, coneCollision: CCSprite!, appleCollision: Apple!) {
+//        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+//
+//            if !self.isInvincible {
+//                self.lives = max(self.lives - 1 , 0)
+//            }
+//            appleCollision.removeFromParent()
+//            }, key: appleCollision)
+//    }
     func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, ground: CCSprite!, scoopCollision : Scoop!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            //Debugging apple movement
             if !self.isInvincible {
-                self.lives--
+                self.lives = max(self.lives - 1 , 0)
+                self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             scoopCollision.removeFromParent()
             }, key: scoopCollision)
@@ -503,17 +512,18 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         
     }
     
-    func ccPhysicsCollisionBegin (pair: CCPhysicsCollisionPair!, minusOneScoop: Powerup!, coneCollision: CCSprite!) -> Bool{
+    func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, minusOneScoop: Powerup!, coneCollision: CCSprite!) -> Bool{
        // println("HIT")
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
           //  println("YO")
             minusOneScoop.removeFromParent()
+            self.animationManager.runAnimationsForSequenceNamed("NewLife")
             self.minusOneX()
             
         }, key: minusOneScoop)
         return true
     }
-    func ccPhysicsCollisionBegin (pair: CCPhysicsCollisionPair!, minusOneScoop: Powerup!, ground: CCSprite!) -> Bool{
+    func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, minusOneScoop: Powerup!, ground: CCSprite!) -> Bool {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             minusOneScoop.removeFromParent()
             
@@ -527,7 +537,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             //animation
             onePoint.removeFromParent()
             if !self.isInvincible {
-                self.lives--
+                self.lives = max(self.lives - 1, 0)
+                self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             }, key: onePoint)
     }
@@ -543,7 +554,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 } else {
                     onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
-                self.lives--
+            
+                self.lives = max(self.lives - 1, 0)
+                self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             else {
                 var copy = onePoint
@@ -567,7 +580,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             //animation
             twoPoints.removeFromParent()
             if !self.isInvincible {
-                self.lives--
+                self.lives = max(self.lives - 1, 0)
+                self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             }, key: twoPoints)
     }
@@ -583,7 +597,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 } else {
                     twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
-                self.lives--
+                self.lives = max(self.lives-1, 0)
+                self.animationManager.runAnimationsForSequenceNamed("Hit")
+                
             }
             else {
                 var copy = twoPoints
@@ -606,7 +622,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             //animation
             threePoints.removeFromParent()
             if !self.isInvincible {
-                self.lives--
+                self.lives = max(self.lives-1, 0)
+                self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             }, key: threePoints)
     }
@@ -622,7 +639,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 } else {
                     threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
-                self.lives--
+                self.lives = max(self.lives--, 0)
+                self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             else {
                 var copy = threePoints
@@ -670,9 +688,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         cone.animationManager.runAnimationsForSequenceNamed("transition")
         var gravityTimer1 = NSTimer.scheduledTimerWithTimeInterval(0.8, target: self, selector: Selector("slowDownGravity"), userInfo: nil, repeats: false)
         
-        var dropTimer1 = NSTimer.scheduledTimerWithTimeInterval(1.3, target: self, selector: Selector("slowDownDrops"), userInfo: nil, repeats: false)
+        var dropTimer1 = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("slowDownDrops"), userInfo: nil, repeats: false)
         
-        var timer3 = NSTimer.scheduledTimerWithTimeInterval(1.3, target: self, selector: Selector("changeInvincible"), userInfo: nil, repeats: false)
+        var timer3 = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: Selector("changeInvincible"), userInfo: nil, repeats: false)
         
     }
     func invincible() {
@@ -698,6 +716,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         pauseButton.visible = false
         scoreLabel.visible = false
         ccPhysicsNode.paused = true
+        cone.visible = false
+        livesNode.visible = false
         
         var gameOverScene = CCBReader.load("Scenes/GameOver") as! GameOver
         gameOverScene.beatHighScore = beatHighScore

@@ -1895,7 +1895,7 @@
 						<key>type</key>
 						<string>Float</string>
 						<key>value</key>
-						<real>40</real>
+						<real>20</real>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -1931,7 +1931,7 @@
 						<string>FloatVar</string>
 						<key>value</key>
 						<array>
-							<real>35</real>
+							<real>20</real>
 							<real>10</real>
 						</array>
 					</dict>
@@ -2093,6 +2093,8 @@
 						<string>ccbResources/ccbParticleFire.png</string>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 				<key>seqExpanded</key>
 				<true/>
 			</dict>
@@ -2303,9 +2305,9 @@
 			<key>name</key>
 			<string>transition</string>
 			<key>offset</key>
-			<real>0.21871060132980347</real>
+			<real>0.0</real>
 			<key>position</key>
-			<real>1.1000000238418579</real>
+			<real>0.0</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
