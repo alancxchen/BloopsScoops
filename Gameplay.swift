@@ -27,6 +27,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     weak var go : CCLabelTTF!
     weak var livesLeft: CCLabelTTF!
     weak var livesNode: CCNodeColor!
+    weak var pauseSymbol: CCButton!
+    
+    
     var beatHighScore = false
     var yScaleValue : CGFloat = 200
     var counter = 0
@@ -89,6 +92,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         
         if gameState == .Paused {
             pauseButton.visible = false
+            pauseSymbol.visible = false
             pauseMenu.animationManager.runAnimationsForSequenceNamed("Exit")
             self.animationManager.runAnimationsForSequenceNamed("321")
             gameState = .Playing
@@ -96,6 +100,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             
         } else {
             pauseButton.visible = false
+            pauseSymbol.visible = false
             gameState = .Paused
             ccPhysicsNode.paused = true
             isPaused = true
@@ -117,6 +122,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         isPaused = false
         //gameState = .Playing
         pauseButton.visible = true
+        pauseSymbol.visible = true
     }
     
     var lives : Int = 5 {
@@ -242,6 +248,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 lives = 5
                 //NSDate().timeIntervalSince1970
                 pauseButton.visible = true
+                pauseSymbol.visible = true
+                
                 pauseButton.opacity = 0
                 pauseButton.runAction(CCActionFadeIn(duration: 0.3))
             }
@@ -714,6 +722,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
 //        strike2.removeFromParent()
 //        strike3.removeFromParent()
         pauseButton.visible = false
+        pauseSymbol.visible = false
         scoreLabel.visible = false
         ccPhysicsNode.paused = true
         cone.visible = false
