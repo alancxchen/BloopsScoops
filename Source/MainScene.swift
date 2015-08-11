@@ -7,7 +7,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate{
     weak var ccPhysicsNode: CCPhysicsNode!
     weak var ground: CCSprite!
     weak var ground2: CCSprite!
-    var counter = 0
+    var counter = 10
     var mixpanel = Mixpanel.sharedInstance()
     func didLoadFromCCB() {
         
@@ -15,6 +15,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate{
         ccPhysicsNode.collisionDelegate = self
     }
     override func update(delta: CCTime) {
+     
         counter++
         if counter % 27 == 0 {
             createDrops()

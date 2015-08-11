@@ -142,6 +142,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             if score > highScore {
                 highScore = score
                 beatHighScore = true
+                mixpanel.track("GameEvents", properties: ["EventType": "Beat High Score"])
             }
             scoreLabel.string = "\(score)"
             var dropSubtractFrequency = 2
@@ -195,7 +196,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 gameState = .Playing
                 startInstructions.runAction(CCActionFadeOut(duration: 0.4))
                 lives = 5
-                mixpanel.track("Game Events", properties: ["ButtonType": "Pause"])
+                mixpanel.track("GameEvents", properties: ["EventType": "Started"])
+    
                 pauseButton.visible = true
                 pauseSymbol.visible = true
                 
@@ -211,7 +213,6 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     
     override func touchMoved(touch: CCTouch!, withEvent event: CCTouchEvent!) {
         if gameState != .Paused && gameState != .GameOver{
-//
             let xPos = touch.locationInWorld().x
         
             cone.position = CGPoint(x: xPos, y: cone.position.y)
@@ -228,10 +229,12 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         let random = Int(CCRANDOM_0_1() * Float(3))
         
         var randX = CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - 50) + 25
+        mixpanel.track("ScoopEvents", properties: ["EventType": "PowerupSpawned"])
         if random == 1 {
             let powerup = CCBReader.load("Powerups/minusOneScoop") as! Powerup
             let y = self.contentSizeInPoints.height + 100
             powerup.position = CGPoint(x: randX, y: y)
+            
  //           self.addChild(powerup, z: 100, name: "swipePowerup")
             ccPhysicsNode.addChild(powerup)
         }
@@ -321,15 +324,6 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             }, key: purpleScoopCollision)
         return true
     }
-//    func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, coneCollision: CCSprite!, appleCollision: Apple!) {
-//        ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-//
-//            if !self.isInvincible {
-//                self.lives = max(self.lives - 1 , 0)
-//            }
-//            appleCollision.removeFromParent()
-//            }, key: appleCollision)
-//    }
     func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, ground: CCSprite!, scoopCollision : Scoop!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             if !self.isInvincible {
@@ -341,7 +335,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, invincibilityPowerup: Powerup!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            
+            self.mixpanel.track("ScoopEvents", properties: ["EventType": "MissedPowerup"])
             invincibilityPowerup.removeFromParent()
             
             }, key: invincibilityPowerup)
@@ -372,14 +366,14 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             minusOneScoop.removeFromParent()
             self.animationManager.runAnimationsForSequenceNamed("NewLife")
             self.minusOneX()
-            
+            self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtMinusOne"])
         }, key: minusOneScoop)
         return true
     }
     func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, minusOneScoop: Powerup!, ground: CCSprite!) -> Bool {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             minusOneScoop.removeFromParent()
-            
+            self.mixpanel.track("ScoopEvents", properties: ["EventType": "MissedMinusOne"])
             }, key: minusOneScoop)
         return true
     }
@@ -393,15 +387,18 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 self.lives = max(self.lives - 1, 0)
                 self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
+            self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedOnePoint"])
             }, key: onePoint)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, onePoint: CCNode!, coneCollision: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+            
             onePoint.physicsBody.collisionType = ""
             onePoint.physicsBody.type = .Static
             // if it is not exact
             let distance = onePoint.position.x - coneCollision.position.x
             if abs(distance) > 24 && !self.isInvincible {
+                self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffOnePoint"])
                 if distance < 0 {
                     onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
                 } else {
@@ -412,6 +409,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             else {
+                self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtOnePoint"])
                 var copy = onePoint
                 copy.position = CGPoint(x: 0 , y: 20)
                 onePoint.removeFromParent()
@@ -431,6 +429,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, twoPoints: CCNode!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             //animation
+            self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedOnePoint"])
+            
             twoPoints.removeFromParent()
             if !self.isInvincible {
                 self.lives = max(self.lives - 1, 0)
@@ -445,6 +445,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             // if it is not exact
             let distance = twoPoints.position.x - coneCollision.position.x
             if abs(distance) > 24 && !self.isInvincible {
+                self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffTwoPoint"])
+                
                 if distance < 0 {
                     twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
                 } else {
@@ -455,6 +457,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 
             }
             else {
+                self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtTwoPoint"])
+                
                 var copy = twoPoints
                 copy.position = CGPoint(x: 0 , y: 20)
                 twoPoints.removeFromParent()
@@ -471,8 +475,12 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             }, key: twoPoints)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, threePoints: CCNode!, ground: CCSprite!) {
+        
+        
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             //animation
+            self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedThreePoints"])
+            
             threePoints.removeFromParent()
             if !self.isInvincible {
                 self.lives = max(self.lives-1, 0)
@@ -482,11 +490,14 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, threePoints: CCNode!, coneCollision: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
+            
             threePoints.physicsBody.collisionType = ""
             threePoints.physicsBody.type = .Static
             // if it is not exact
             let distance = threePoints.position.x - coneCollision.position.x
             if abs(distance) > 24 && !self.isInvincible {
+                self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffThreePoints"])
+                
                 if distance < 0 {
                     threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
                 } else {
@@ -496,6 +507,8 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                 self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             else {
+                self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtThreePoints"])
+                
                 var copy = threePoints
                 copy.position = CGPoint(x: 0 , y: 20)
                 threePoints.removeFromParent()
@@ -577,6 +590,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         gameOverScene.beatHighScore = beatHighScore
         gameOverScene.score = score
         gameOverScene.highScore = highScore
+        mixpanel.track("GameEvents", properties: ["EventType": "GameOver"])
         
         self.addChild(gameOverScene)
         

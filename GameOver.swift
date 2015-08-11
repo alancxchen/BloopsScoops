@@ -43,6 +43,7 @@ class GameOver: CCNode {
     func restart() {
         
         self.animationManager.runAnimationsForSequenceNamed("exit")
+        mixpanel.track("GameOverEvents", properties: ["EventType": "Restart"])
     }
     func didLoadFromCCB() {
 
@@ -56,6 +57,8 @@ class GameOver: CCNode {
             self.addChild(infoLayer)
             infoVisible = true
         }
+        mixpanel.track("GameOverEvents", properties: ["EventType": "Info"])
+        
     }
     func back() {
         
@@ -64,6 +67,7 @@ class GameOver: CCNode {
     }
 
     func shareButtonTapped() {
+        mixpanel.track("GameOverEvents", properties: ["EventType": "Sharebutton"])
         var scene = CCDirector.sharedDirector().runningScene
         var node: AnyObject = scene.children[0]
         var screenshot = screenShotWithStartNode(node as! CCNode)
