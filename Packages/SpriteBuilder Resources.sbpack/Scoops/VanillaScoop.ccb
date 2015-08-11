@@ -1293,7 +1293,7 @@
 								<key>value</key>
 								<array>
 									<real>28.059999465942383</real>
-									<real>22.211111068725586</real>
+									<real>17.5</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -1370,7 +1370,7 @@
 								<key>type</key>
 								<string>Float</string>
 								<key>value</key>
-								<real>0.8888888955116272</real>
+								<real>1</real>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -1382,7 +1382,7 @@
 									<real>0.028940709307789803</real>
 									<real>1</real>
 									<real>0.29026982188224792</real>
-									<real>0.8888888955116272</real>
+									<real>1</real>
 								</array>
 							</dict>
 							<dict>
@@ -1490,8 +1490,6 @@
 								</array>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 						<key>seqExpanded</key>
 						<true/>
 					</dict>
@@ -1749,7 +1747,7 @@
 								<key>value</key>
 								<array>
 									<real>28.059999465942383</real>
-									<real>22.211111068725586</real>
+									<real>17.5</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -1825,7 +1823,7 @@
 								<key>type</key>
 								<string>Float</string>
 								<key>value</key>
-								<real>0.8888888955116272</real>
+								<real>1</real>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -1837,7 +1835,7 @@
 									<real>0.37593138217926025</real>
 									<real>1</real>
 									<real>0.91731882095336914</real>
-									<real>0.8888888955116272</real>
+									<real>1</real>
 								</array>
 							</dict>
 							<dict>
@@ -2255,7 +2253,7 @@
 			<key>soundChannel</key>
 			<dict>
 				<key>isExpanded</key>
-				<false/>
+				<true/>
 				<key>keyframes</key>
 				<array/>
 				<key>type</key>
@@ -2440,7 +2438,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>0.033333335071802139</real>
+			<real>0.0</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

@@ -7,7 +7,8 @@
 //
 
 import Foundation
-
+import UIKit
+import Mixpanel
 class GameOver: CCNode {
     var notHighScoreNode : CCNode!
     var scoreLabel: CCLabelTTF!
@@ -15,6 +16,9 @@ class GameOver: CCNode {
     var beatHighScore = false
     var newBestLabel : CCLabelTTF!
     var newBestNode: CCNode!
+    var infoLayer : CCNode!
+    var infoVisible = false
+    var mixpanel = Mixpanel.sharedInstance()
     var score: Int = 0 {
         didSet {
             scoreLabel.string = "\(score)"
@@ -46,24 +50,37 @@ class GameOver: CCNode {
         restartButton.runAction(CCActionFadeIn(duration: 0.3))
     }
     
-    
-    
+    func info() {
+        if !infoVisible {
+            infoLayer = CCBReader.load("Scenes/credits", owner: self)
+            self.addChild(infoLayer)
+            infoVisible = true
+        }
+    }
+    func back() {
+        
+        infoLayer.animationManager.runAnimationsForSequenceNamed("exit")
+        infoVisible = false
+    }
+
     func shareButtonTapped() {
         var scene = CCDirector.sharedDirector().runningScene
         var node: AnyObject = scene.children[0]
         var screenshot = screenShotWithStartNode(node as! CCNode)
         
-        let sharedText = "Check out this game! [link to game]"
+        let sharedText = "Check out this cool game yo!"
         let itemsToShare = [screenshot, sharedText]
         
         var excludedActivities = [ UIActivityTypeAssignToContact,
             UIActivityTypeAddToReadingList, UIActivityTypePostToTencentWeibo]
         
         var controller = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
-        
+        if controller.respondsToSelector(Selector("popoverPresentationController")) {
+            controller.popoverPresentationController?.sourceView = UIApplication.sharedApplication().keyWindow?.rootViewController?.view
+        }
         controller.excludedActivityTypes = excludedActivities
         UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(controller, animated: true, completion: nil)
-        
+
     }
     
     func screenShotWithStartNode(node: CCNode) -> UIImage {
