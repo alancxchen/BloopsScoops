@@ -12,5 +12,8 @@ class Cone: CCSprite {
     func didLoadFromCCB() {
         userInteractionEnabled = true
     }
+    weak var inCone: invincibleCone!
+    
+    
     
 }

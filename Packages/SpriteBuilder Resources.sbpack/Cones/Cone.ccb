@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>3</integer>
+	<integer>4</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -147,6 +147,76 @@
 					</dict>
 				</array>
 			</dict>
+			<dict>
+				<key>UUID</key>
+				<integer>3</integer>
+				<key>baseClass</key>
+				<string>CCBFile</string>
+				<key>children</key>
+				<array/>
+				<key>customClass</key>
+				<string></string>
+				<key>displayName</key>
+				<string>invincibleCone</string>
+				<key>memberVarAssignmentName</key>
+				<string>inCone</string>
+				<key>memberVarAssignmentType</key>
+				<integer>1</integer>
+				<key>properties</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>visible</string>
+						<key>type</key>
+						<string>Check</string>
+						<key>value</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>name</string>
+						<key>type</key>
+						<string>StringSimple</string>
+						<key>value</key>
+						<string></string>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>position</string>
+						<key>type</key>
+						<string>Position</string>
+						<key>value</key>
+						<array>
+							<real>0.0</real>
+							<real>0.0</real>
+							<integer>0</integer>
+							<integer>0</integer>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>scale</string>
+						<key>type</key>
+						<string>ScaleLock</string>
+						<key>value</key>
+						<array>
+							<real>1</real>
+							<real>1</real>
+							<false/>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>ccbFile</string>
+						<key>type</key>
+						<string>CCBFile</string>
+						<key>value</key>
+						<string>Cones/invinciblecone.ccb</string>
+					</dict>
+				</array>
+			</dict>
 		</array>
 		<key>customClass</key>
 		<string>Cone</string>
@@ -194,12 +264,12 @@
 					<real>-0.7958187460899353</real>
 				</array>
 				<array>
-					<real>-18.708099365234375</real>
-					<real>24.197977066040039</real>
+					<real>-18.783357620239258</real>
+					<real>26.793012619018555</real>
 				</array>
 				<array>
-					<real>18.153024673461914</real>
-					<real>24.187984466552734</real>
+					<real>17.706804275512695</real>
+					<real>27.113246917724609</real>
 				</array>
 				<array>
 					<real>11.060608863830566</real>
@@ -214,12 +284,12 @@
 						<real>0.01271856389939785</real>
 					</array>
 					<array>
-						<real>18.153024673461914</real>
-						<real>24.187984466552734</real>
+						<real>17.706804275512695</real>
+						<real>27.113246917724609</real>
 					</array>
 					<array>
-						<real>-18.708099365234375</real>
-						<real>24.197977066040039</real>
+						<real>-18.783357620239258</real>
+						<real>26.793012619018555</real>
 					</array>
 					<array>
 						<real>-10.35200309753418</real>

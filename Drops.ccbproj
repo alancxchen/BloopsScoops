@@ -39,7 +39,7 @@
 	<key>publishDirectoryAndroid</key>
 	<string>Source/Resources/Published-Android</string>
 	<key>publishEnabledAndroid</key>
-	<true/>
+	<false/>
 	<key>publishEnablediPhone</key>
 	<true/>
 	<key>publishEnvironment</key>
@@ -81,42 +81,24 @@
 		<key>Sprites</key>
 		<dict/>
 		<key>assets</key>
-		<dict>
-			<key>isDirty</key>
-			<true/>
-		</dict>
+		<dict/>
 		<key>assets/Buttons</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
 		<key>assets/Scoops</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
-			<key>isSmartSpriteSheet</key>
-			<true/>
-		</dict>
-		<key>assets/hack</key>
-		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
 		<key>assets/rainbow</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
 		<key>assets/unusedStuff</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>

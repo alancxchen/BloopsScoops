@@ -82,6 +82,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     
     override func onEnter() {
+       // ccPhysicsNode.debugDraw = true
         super.onEnter()
         var coneX = self.contentSizeInPoints.width / 2
         cone.position = CGPoint(x: coneX, y: cone.position.y)
@@ -169,13 +170,15 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     override func update(delta: CCTime) {
 
         if gameState != .Paused && gameState != .GameOver && !isPaused {
-        
+            
            
             if gameState == .Playing {
+               
                 if counter % 100 == 0 {
                     if frequencyOfDrops > 27 {
                         frequencyOfDrops -= 1
                     }
+                    
                 }
                 counter++
                 duration = duration + CGFloat(delta)
@@ -229,7 +232,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         let random = Int(CCRANDOM_0_1() * Float(3))
         
         var randX = CGFloat(CCRANDOM_0_1()) * (self.contentSizeInPoints.width - 50) + 25
-        mixpanel.track("ScoopEvents", properties: ["EventType": "PowerupSpawned"])
+        //mixpanel.track("ScoopEvents", properties: ["EventType": "PowerupSpawned"])
         if random == 1 {
             let powerup = CCBReader.load("Powerups/minusOneScoop") as! Powerup
             let y = self.contentSizeInPoints.height + 100
@@ -328,14 +331,15 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             if !self.isInvincible {
                 self.lives = max(self.lives - 1 , 0)
-                self.animationManager.runAnimationsForSequenceNamed("Hit")
+                self.scheduleOnce(Selector("hit"), delay: 0.03)
+//self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             scoopCollision.removeFromParent()
             }, key: scoopCollision)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, invincibilityPowerup: Powerup!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
-            self.mixpanel.track("ScoopEvents", properties: ["EventType": "MissedPowerup"])
+            //self.mixpanel.track("ScoopEvents", properties: ["EventType": "MissedPowerup"])
             invincibilityPowerup.removeFromParent()
             
             }, key: invincibilityPowerup)
@@ -344,14 +348,15 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, invincibilityPowerup: Powerup!, coneCollision: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             print("hit invincible")
-            var invinciblecone = CCBReader.load("Cones/invinciblecone", owner: self) as! invincibleCone
-            self.ccPhysicsNode.addChild(invinciblecone)
-            invinciblecone.position = self.cone.position
-            self.cone.removeFromParent()
-            self.cone = invinciblecone
-            
+//            var invinciblecone = CCBReader.load("Cones/invinciblecone", owner: self) as! Cone
+//            self.ccPhysicsNode.addChild(invinciblecone)
+//            invinciblecone.position = self.cone.position
+//            self.cone.removeFromParent()
+//            self.cone = invinciblecone
+            self.cone.inCone.visible = true
 
             invincibilityPowerup.removeFromParent()
+            
             if !self.isInvincible {
                 self.invincible()
             }
@@ -366,14 +371,14 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             minusOneScoop.removeFromParent()
             self.animationManager.runAnimationsForSequenceNamed("NewLife")
             self.minusOneX()
-            self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtMinusOne"])
+            //self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtMinusOne"])
         }, key: minusOneScoop)
         return true
     }
     func ccPhysicsCollisionPostSolve(pair: CCPhysicsCollisionPair!, minusOneScoop: Powerup!, ground: CCSprite!) -> Bool {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             minusOneScoop.removeFromParent()
-            self.mixpanel.track("ScoopEvents", properties: ["EventType": "MissedMinusOne"])
+            //self.mixpanel.track("ScoopEvents", properties: ["EventType": "MissedMinusOne"])
             }, key: minusOneScoop)
         return true
     }
@@ -385,9 +390,11 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             onePoint.removeFromParent()
             if !self.isInvincible {
                 self.lives = max(self.lives - 1, 0)
-                self.animationManager.runAnimationsForSequenceNamed("Hit")
+                
+                self.scheduleOnce(Selector("hit"), delay: 0.03)
+                //self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
-            self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedOnePoint"])
+            //self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedOnePoint"])
             }, key: onePoint)
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, onePoint: CCNode!, coneCollision: CCSprite!) {
@@ -396,20 +403,28 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             onePoint.physicsBody.collisionType = ""
             onePoint.physicsBody.type = .Static
             // if it is not exact
-            let distance = onePoint.position.x - coneCollision.position.x
+            let distance = onePoint.position.x - self.cone.position.x
+            println("onePoint: \(onePoint.position.x)")
+            println("conePosition: \(self.cone.position.x)")
+            let val = distance
             if abs(distance) > 24 && !self.isInvincible {
-                self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffOnePoint"])
+                //self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffOnePoint"])
+                println("distance: \(distance)")
                 if distance < 0 {
+                    println("bounceleft")
                     onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
                 } else {
+                    println("bounceright")
                     onePoint.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
             
                 self.lives = max(self.lives - 1, 0)
-                self.animationManager.runAnimationsForSequenceNamed("Hit")
+               // println("HIT")
+                self.scheduleOnce(Selector("hit"), delay: 0.03)
+                //self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             else {
-                self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtOnePoint"])
+                //self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtOnePoint"])
                 var copy = onePoint
                 copy.position = CGPoint(x: 0 , y: 20)
                 onePoint.removeFromParent()
@@ -429,12 +444,14 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, twoPoints: CCNode!, ground: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             //animation
-            self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedOnePoint"])
+            //self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedOnePoint"])
             
             twoPoints.removeFromParent()
             if !self.isInvincible {
                 self.lives = max(self.lives - 1, 0)
-                self.animationManager.runAnimationsForSequenceNamed("Hit")
+               // println("HIT")
+                self.scheduleOnce(Selector("hit"), delay: 0.03)
+                //self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             }, key: twoPoints)
     }
@@ -443,9 +460,10 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             twoPoints.physicsBody.collisionType = ""
             twoPoints.physicsBody.type = .Static
             // if it is not exact
-            let distance = twoPoints.position.x - coneCollision.position.x
+           let distance = twoPoints.position.x - self.cone.position.x
+            //println(distance)
             if abs(distance) > 24 && !self.isInvincible {
-                self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffTwoPoint"])
+                //self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffTwoPoint"])
                 
                 if distance < 0 {
                     twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
@@ -453,11 +471,13 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                     twoPoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
                 self.lives = max(self.lives-1, 0)
-                self.animationManager.runAnimationsForSequenceNamed("Hit")
+                println("HIT")
+                self.scheduleOnce(Selector("hit"), delay: 0.03)
+                //self.animationManager.runAnimationsForSequenceNamed("Hit")
                 
             }
             else {
-                self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtTwoPoint"])
+                //self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtTwoPoint"])
                 
                 var copy = twoPoints
                 copy.position = CGPoint(x: 0 , y: 20)
@@ -479,14 +499,19 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
         
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
             //animation
-            self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedThreePoints"])
+            //self.mixpanel.track("ScoopEvents", properties: ["EventType": "DroppedThreePoints"])
             
             threePoints.removeFromParent()
             if !self.isInvincible {
                 self.lives = max(self.lives-1, 0)
-                self.animationManager.runAnimationsForSequenceNamed("Hit")
+                println("HIT")
+                self.scheduleOnce(Selector("hit"), delay: 0.03)
+                //self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             }, key: threePoints)
+    }
+    func hit() {
+        self.animationManager.runAnimationsForSequenceNamed("Hit")
     }
     func ccPhysicsCollisionPostSolve (pair: CCPhysicsCollisionPair!, threePoints: CCNode!, coneCollision: CCSprite!) {
         ccPhysicsNode.space.addPostStepBlock({ () -> Void in
@@ -494,9 +519,9 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
             threePoints.physicsBody.collisionType = ""
             threePoints.physicsBody.type = .Static
             // if it is not exact
-            let distance = threePoints.position.x - coneCollision.position.x
+            let distance = threePoints.position.x - self.cone.position.x
             if abs(distance) > 24 && !self.isInvincible {
-                self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffThreePoints"])
+                //self.mixpanel.track("ScoopEvents", properties: ["EventType": "BounceOffThreePoints"])
                 
                 if distance < 0 {
                     threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffLeft")
@@ -504,10 +529,12 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
                     threePoints.animationManager.runAnimationsForSequenceNamed("bounceOffRight")
                 }
                 self.lives = max(self.lives-1, 0)
-                self.animationManager.runAnimationsForSequenceNamed("Hit")
+               
+                self.scheduleOnce(Selector("hit"), delay: 0.03)
+//                self.animationManager.runAnimationsForSequenceNamed("Hit")
             }
             else {
-                self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtThreePoints"])
+                //self.mixpanel.track("ScoopEvents", properties: ["EventType": "CaughtThreePoints"])
                 
                 var copy = threePoints
                 copy.position = CGPoint(x: 0 , y: 20)
@@ -526,32 +553,40 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
 
     func slowDownGravity() {
+        println("slowdwngravity")
         ccPhysicsNode.gravity = previousGravity
     }
 
     func slowDownDrops() {
+        println("slowdowndrops")
         frequencyOfDrops = previousDropFrequency + 10
     }
     func changeCone() {
-        var originalCone = CCBReader.load("Cones/Cone") as! Cone
-        ccPhysicsNode.addChild(originalCone)
-        originalCone.position = cone.position
-        cone.removeFromParent()
-        
-        cone = originalCone
-        
+        println("ChangeCone")
+//        var originalCone = CCBReader.load("Cones/Cone") as! Cone
+//        ccPhysicsNode.addChild(originalCone)
+//        originalCone.position = cone.position
+//        cone.removeFromParent()
+//        
+//        cone = originalCone
+        cone.inCone.visible = false
     }
     func changeInvincible() {
+        println("changeinvincible")
+        cone.inCone.visible = false
         isInvincible = false
     }
     func speedUpGravity() {
+        println("speedupgravity")
         ccPhysicsNode.gravity.y -= 1000
     }
     func speedUpDrops() {
+        println("speeddrops")
         frequencyOfDrops = max(20, previousDropFrequency - 20)
     }
     func changeFromInvincible() {
         cone.animationManager.runAnimationsForSequenceNamed("transition")
+        println("starting slowdowngravity")
         var gravityTimer1 = NSTimer.scheduledTimerWithTimeInterval(0.8, target: self, selector: Selector("slowDownGravity"), userInfo: nil, repeats: false)
         
         var dropTimer1 = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("slowDownDrops"), userInfo: nil, repeats: false)
@@ -561,6 +596,7 @@ class Gameplay: CCNode, CCPhysicsCollisionDelegate {
     }
     func invincible() {
         isInvincible = true
+        println("starting changefromInvincible")
         var timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("changeFromInvincible"), userInfo: nil, repeats: false)
         var timer3 = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("speedUpGravity"), userInfo: nil, repeats: false)
         var dropTimer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: Selector("speedUpDrops"), userInfo: nil, repeats: false)
