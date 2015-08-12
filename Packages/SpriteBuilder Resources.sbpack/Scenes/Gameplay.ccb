@@ -14,7 +14,7 @@
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>currentSequenceId</key>
 	<integer>0</integer>
 	<key>docDimensionsType</key>
@@ -153,6 +153,8 @@
 								<array/>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 					</dict>
 				</array>
 				<key>customClass</key>
@@ -773,8 +775,6 @@
 								<string>Cones/Cone.ccb</string>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 					</dict>
 				</array>
 				<key>customClass</key>
@@ -1362,7 +1362,7 @@
 								<key>type</key>
 								<string>FontTTF</string>
 								<key>value</key>
-								<string>Helvetica</string>
+								<string>Futura-CondensedMedium</string>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -1521,7 +1521,7 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>0.26831701397895813</real>
+									<real>0.25999999046325684</real>
 									<real>0.89467382431030273</real>
 									<integer>0</integer>
 									<integer>2</integer>
@@ -1570,7 +1570,7 @@
 								<key>type</key>
 								<string>FontTTF</string>
 								<key>value</key>
-								<string>Helvetica</string>
+								<string>Futura-CondensedMedium</string>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -2178,7 +2178,7 @@
 							<dict>
 								<key>baseValue</key>
 								<array>
-									<real>0.80000001192092896</real>
+									<real>1</real>
 									<real>0.80000001192092896</real>
 								</array>
 								<key>name</key>
@@ -2187,7 +2187,7 @@
 								<string>ScaleLock</string>
 								<key>value</key>
 								<array>
-									<real>0.80000001192092896</real>
+									<real>1</real>
 									<real>0.80000001192092896</real>
 									<false/>
 									<integer>0</integer>
@@ -2210,7 +2210,7 @@
 								<key>type</key>
 								<string>FontTTF</string>
 								<key>value</key>
-								<string>Helvetica</string>
+								<string>Futura-CondensedMedium</string>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -6275,7 +6275,7 @@
 						<key>type</key>
 						<string>FontTTF</string>
 						<key>value</key>
-						<string>Georgia</string>
+						<string>Futura-CondensedMedium</string>
 					</dict>
 					<dict>
 						<key>name</key>

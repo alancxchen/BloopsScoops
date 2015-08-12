@@ -4,7 +4,7 @@
 <dict>
 	<key>SequencerJoints</key>
 	<dict>
-		<key>dden</key>
+		<key>hidden</key>
 		<false/>
 		<key>locked</key>
 		<false/>
@@ -16,7 +16,7 @@
 	<key>currentResolution</key>
 	<integer>1</integer>
 	<key>currentSequenceId</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>docDimensionsType</key>
 	<integer>0</integer>
 	<key>fileType</key>
@@ -155,8 +155,6 @@
 								<array/>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 					</dict>
 					<dict>
 						<key>UUID</key>
@@ -1096,6 +1094,8 @@
 										</array>
 									</dict>
 								</array>
+								<key>selected</key>
+								<true/>
 								<key>seqExpanded</key>
 								<true/>
 							</dict>
@@ -1687,7 +1687,7 @@
 								<key>value</key>
 								<array>
 									<real>0.0</real>
-									<real>1</real>
+									<real>0.0</real>
 									<integer>0</integer>
 									<integer>2</integer>
 									<integer>2</integer>

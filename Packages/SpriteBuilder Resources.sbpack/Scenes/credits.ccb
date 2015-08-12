@@ -16,7 +16,7 @@
 	<key>currentResolution</key>
 	<integer>0</integer>
 	<key>currentSequenceId</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>docDimensionsType</key>
 	<integer>2</integer>
 	<key>fileType</key>
@@ -64,7 +64,7 @@
 									<integer>3</integer>
 									<key>value</key>
 									<array>
-										<real>0.034000001847743988</real>
+										<real>0.039999999105930328</real>
 										<real>1</real>
 									</array>
 								</dict>
@@ -82,7 +82,7 @@
 									<integer>3</integer>
 									<key>value</key>
 									<array>
-										<real>0.03425142914056778</real>
+										<real>0.039999999105930328</real>
 										<real>0.088502824306488037</real>
 									</array>
 								</dict>
@@ -113,8 +113,8 @@
 									<integer>3</integer>
 									<key>value</key>
 									<array>
-										<real>0.0</real>
-										<real>0.0</real>
+										<real>0.039999999105930328</real>
+										<real>0.088999994099140167</real>
 									</array>
 								</dict>
 								<dict>
@@ -131,7 +131,7 @@
 									<integer>3</integer>
 									<key>value</key>
 									<array>
-										<real>0.0</real>
+										<real>0.039999999105930328</real>
 										<real>1</real>
 									</array>
 								</dict>
@@ -2786,7 +2786,7 @@ http://creativecommons.org/licenses/by/3.0/</string>
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.034000001847743988</real>
+							<real>0.039999999105930328</real>
 							<real>1</real>
 							<integer>0</integer>
 							<integer>2</integer>
@@ -2831,8 +2831,6 @@ http://creativecommons.org/licenses/by/3.0/</string>
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 				<key>seqExpanded</key>
 				<true/>
 			</dict>
@@ -3403,7 +3401,7 @@ http://creativecommons.org/licenses/by/3.0/</string>
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>0.0</real>
+			<real>1.2999999523162842</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
